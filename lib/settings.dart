@@ -16,12 +16,16 @@ class _SettingsState extends State<Settings> {
   var istsubtitle=["MATERIAL YOU(auto)","","9.00-6.00","DARK"];
 
   bool _isswitch=false;
-  bool _obscured=true;
+  late int selectedradiotile=1;
+
+
+
 
 
   @override
   Widget build(BuildContext context) {
     List<bool> isttrailing=[false,true,false,false];
+    List sele=["1","2","3","4"];
    return Scaffold(
      body:SingleChildScrollView(
        child: Column(
@@ -29,7 +33,7 @@ class _SettingsState extends State<Settings> {
            return ListTile(
               onTap: (){
 
-                if(isttrailing[index]==false)
+                if(isttrailing[index]==false&& sele[index]=="1")
                {
                  showDialog(context: context,
                      builder: (BuildContext context){
@@ -53,27 +57,41 @@ class _SettingsState extends State<Settings> {
                                      Text("Theme"),
                                      content: Column(
                                        children: [
-                                         RadioListTile(value: 1, groupValue: 1, title: Text(""),onChanged: (val){
-
+                                         RadioListTile(value: 1, groupValue: selectedradiotile, title: Text("MATERIAL YOU(AUTO)"),onChanged: (val){
+                                                                    setState((){
+                                                                      selectedradiotile=val!;
+                                                                    });
                                          }),
 
-                                         RadioListTile(value: 2, groupValue: 1, onChanged: (val){
-
+                                         RadioListTile(value: 2, groupValue: selectedradiotile, title: Text("DARK"),onChanged: (val){
+                                           setState((){
+                                             selectedradiotile=val!;
+                                           });
                                          }),
-                                         RadioListTile(value: 3, groupValue: 1, onChanged: (val){
-
+                                         RadioListTile(value: 3, groupValue: selectedradiotile,title: Text("MATERIAL YOU(DARK)"), onChanged: (val){
+                                           setState((){
+                                             selectedradiotile=val!;
+                                           });
                                          }),
-                                         RadioListTile(value: 4, groupValue: 1, onChanged: (val){
-
+                                         RadioListTile(value: 4, groupValue: selectedradiotile, title: Text("GRAY"),onChanged: (val){
+                                           setState((){
+                                             selectedradiotile=val!;
+                                           });
                                          }),
-                                         RadioListTile(value: 5, groupValue: 1, onChanged: (val){
-
+                                         RadioListTile(value: 5, groupValue: selectedradiotile, title: Text("BLACK"),onChanged: (val){
+                                           setState((){
+                                             selectedradiotile=val!;
+                                           });
                                          }),
-                                         RadioListTile(value: 6, groupValue: 1, onChanged: (val){
-
+                                         RadioListTile(value: 6, groupValue: selectedradiotile,title: Text("LIGHT"), onChanged: (val){
+                                           setState((){
+                                             selectedradiotile=val!;
+                                           });
                                          }),
-                                         RadioListTile(value: 7, groupValue: 1, onChanged: (val){
-
+                                         RadioListTile(value: 7, groupValue: selectedradiotile,title: Text("MATERIAL YOU(LIGHT)"), onChanged: (val){
+                                           setState((){
+                                             selectedradiotile=val!;
+                                           });
                                          }),
                                        ],
                                      ),
@@ -93,6 +111,79 @@ class _SettingsState extends State<Settings> {
                      }
                  );
                }
+                else if(isttrailing[index]==false&& sele[index]=="3"){
+                 _showTimePicker();
+                }
+                else if(isttrailing[index]==false&& sele[index]=="4"){
+                  {
+                    showDialog(context: context,
+                        builder: (BuildContext context){
+
+
+
+                          return Center(
+                            child: StatefulBuilder(
+                                builder: (context, setState)
+                                {
+                                  return SingleChildScrollView(
+
+                                    child: Container(
+                                      padding: EdgeInsets.all(8.0),
+
+                                      child: AlertDialog(
+                                        // insetPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 150),
+
+                                        // buttonPadding: EdgeInsets.zero, //contentPadding: EdgeInsets.zero, // Customize padding to reduce height
+                                        title:
+                                        Text("Theme"),
+                                        content: Column(
+                                          children: [
+                                            RadioListTile(value: 1, groupValue: selectedradiotile, title: Text("MATERIAL YOU(AUTO)"),onChanged: (val){
+                                              setState((){
+                                                selectedradiotile=val!;
+                                              });
+                                            }),
+
+                                            RadioListTile(value: 2, groupValue: selectedradiotile, title: Text("DARK"),onChanged: (val){
+                                              setState((){
+                                                selectedradiotile=val!;
+                                              });
+                                            }),
+                                            RadioListTile(value: 3, groupValue: selectedradiotile,title: Text("MATERIAL YOU(DARK)"), onChanged: (val){
+                                              setState((){
+                                                selectedradiotile=val!;
+                                              });
+                                            }),
+                                            RadioListTile(value: 4, groupValue: selectedradiotile, title: Text("GRAY"),onChanged: (val){
+                                              setState((){
+                                                selectedradiotile=val!;
+                                              });
+                                            }),
+                                            RadioListTile(value: 5, groupValue: selectedradiotile, title: Text("BLACK"),onChanged: (val){
+                                              setState((){
+                                                selectedradiotile=val!;
+                                              });
+                                            }),
+
+                                          ],
+                                        ),
+                                        actions: [
+                                          OutlinedButton(onPressed: () {
+                                            Navigator.pop(context);
+                                          }, child: Text("CANCEL")),
+
+
+
+                                        ],),
+                                    ),
+                                  );
+                                }),
+                          );
+
+                        }
+                    );
+                  }
+                }
                 else if(isttrailing[index]==true)
                   {
                     _isswitch=!_isswitch;
@@ -124,6 +215,11 @@ class _SettingsState extends State<Settings> {
        ]),
      ) ,
    );
-  }
 
-}
+  }
+  Future _showTimePicker()async{
+    TimeOfDay? timepicked=await showTimePicker(context: context, initialTime: TimeOfDay.now(),initialEntryMode: TimePickerEntryMode.dial);
+    if(timepicked!=null){
+      print("date selected :${timepicked.hour}-${timepicked.minute}");
+    }
+}}

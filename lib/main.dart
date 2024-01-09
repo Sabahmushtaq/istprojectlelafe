@@ -1,9 +1,13 @@
 
 
+import 'dart:convert';
+
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:istprojectlelafe/Models/PostModel.dart';
 import 'package:istprojectlelafe/search.dart';
 import 'package:istprojectlelafe/settings.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MyApp());
@@ -50,6 +54,19 @@ List <String>items=[
   "ASK HN","SHOW HN","HN JOBS","BOOKMARKS",
 
 ];
+List<PostModel> postList=[];
+Future<List<PostModel>> getPostApi ()async{
+  final response = await http.get(Uri.parse("https://jsonplaceholder.typicode.com/posts"));
+  var data=jsonDecode(response.body.toString());
+  if(response.statusCode==200){
+    for(Map i in data){
+      postList.add(PostModel.fromJson(i));
+    }
+    return postList;
+  }else{
+    return postList;
+  }
+}
 
 
 
@@ -173,21 +190,50 @@ bool _obscured=true;
 
 
                   ]),
-            )                          //in case of container and list ,wrap list with expanded
-           , ListView.builder(physics: NeverScrollableScrollPhysics(),shrinkWrap:true,itemBuilder: (context,index){
+            ),                          //in case of container and list ,wrap list with expanded
+           /* ListView.builder(physics: NeverScrollableScrollPhysics(),shrinkWrap:true,itemBuilder: (context,index){
               return ListTile(
                 leading: Text("${index+1}"),
                 title: Text(""),
-                subtitle: Row(children: [],),
+                subtitle: Row(children: [
+
+                ],),
                 trailing: Icon(Icons.message),
               );
-            },itemCount: 50,)
+            },
+              itemCount: 50,
+            )*/
+            Container(
+              child: FutureBuilder(future: getPostApi(), builder: (context,snapshot){
+                if(!snapshot.hasData){
+                  return Center(child: Text("LOADING" ,style: TextStyle(fontSize: 32,fontWeight: FontWeight.bold),));
+                }
+                else{
+                  return ListView.builder( physics:NeverScrollableScrollPhysics(),shrinkWrap:true,itemBuilder: (context,index){
+
+                    return ListTile(
+                    leading: Text(postList[index].userId.toString()),
+                     title: Text(postList[index].title.toString()),
+                    subtitle: Row(children: [
+
+                            Text("lorem ipsum"),
+                      Text("lorem ipsum"),
+                      Text("lorem ipsum"),
+                      ],),
+                    trailing: Icon(Icons.message),
+                  );
+                  },
+                  itemCount: postList.length,);
+                }
+
+              }),
+            )
           ],
         ),
       )
     );
-  }
-
-
+  }//
+//
+//
 
 }
