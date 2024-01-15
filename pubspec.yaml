@@ -31,6 +31,8 @@ dependencies:
   flutter:
     sdk: flutter
   dropdown_button2: ^2.3.8
+  icons_flutter: ^0.0.4
+  font_awesome_flutter: ^10.6.0
   http: ^1.1.2
 
 

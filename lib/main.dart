@@ -140,7 +140,7 @@ bool _obscured=true;
                      title: Text(postList[index].title.toString()),
                     subtitle: Row(children: [
 
-                            Text("lorem ipsum"),
+                      Text("lorem ipsum"),
                       Text("lorem ipsum"),
                       Text("lorem ipsum"),
                       ],),
@@ -287,7 +287,7 @@ createmenuitems(){
       );
     }
     if(newValue=="set"){
-      Navigator.push(context as BuildContext, MaterialPageRoute(builder: (context)=> Settings()));
+      Navigator.push(context as BuildContext, MaterialPageRoute(builder: (context)=> settingspage()));
     }
   },
   );
